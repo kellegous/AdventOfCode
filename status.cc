@@ -1,29 +1,26 @@
 #include "status.h"
 
-#include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <memory>
+#include <mutex>
 
 #include "util.h"
 
 namespace {
+std::unique_ptr<Status> noerr;
 
-// The interned version of NoErr()
-static Status* noErr;
+std::once_flag noerr_once;
 
-// leveldb is going to use pthread anyway, so this allows us
-// to use proper pthread_once for initialization.
-pthread_once_t once = PTHREAD_ONCE_INIT;
-
-// Module level initialization.
 void Init() {
-  noErr = new Status();
+  noerr.reset(new Status());
 }
 
-} // anonymous
+}
 
 Status::Status(const char* msg, const char* file) {
-  util::StringFormat(&data_, "[%s] %s", msg, file);
+  util::StringFormat(&data_, "[%s] %s", file, msg);
 }
 
 const char* Status::what() const {
@@ -31,9 +28,6 @@ const char* Status::what() const {
 }
 
 const Status NoErr() {
-  if (pthread_once(&once, Init) != 0) {
-    fprintf(stderr, "once failed\n");
-    abort();
-  }
-  return *noErr;
+  std::call_once(noerr_once, Init);
+  return *noerr;
 }

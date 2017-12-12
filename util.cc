@@ -1,10 +1,9 @@
 #include "util.h"
 
-#include <cstdarg>
 #include <dirent.h>
+#include <execinfo.h>
 #include <glob.h>
 #include <libgen.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,12 +15,19 @@
 #endif
 #include <unistd.h>
 
+#include <cstdarg>
+#include <mutex>
+#include <thread>
+
+#define BT_BUF_SIZE 100
+
 namespace {
 
 // mach systems have a timebase that is needed to scale the results
 // of mach_absolute_time to "real" absolute time. This allows for a
 // single initializaiton of that factor.
-pthread_once_t once = PTHREAD_ONCE_INIT;
+std::once_flag once;
+
 static double factor;
 
 // Get the current time in microseconds.
@@ -84,10 +90,7 @@ Status File::Close() {
 
 
 Timer::Timer() : started_(0) {
-  if (pthread_once(&once, Init) != 0) {
-    fprintf(stderr, "module init failed\n");
-    abort();
-  }
+  std::call_once(once, Init);
   Reset();
 }
 
@@ -242,6 +245,11 @@ void Basename(std::string* res, std::string& path) {
 
 void Fatal(const char* msg) {
   fprintf(stderr, "[FATAL] %s\n", msg);
+
+  void* buffer[BT_BUF_SIZE];
+  int npts = backtrace(buffer, BT_BUF_SIZE);
+  backtrace_symbols_fd(buffer, npts, STDERR_FILENO);
+
   abort();
 }
 

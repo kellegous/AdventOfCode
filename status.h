@@ -1,6 +1,8 @@
 #ifndef STATUS_H_
 #define STATUS_H_
 
+#include <memory>
+#include <mutex>
 #include <string>
 
 // A lightweight object used to return error codes in a sane way.
@@ -24,7 +26,7 @@ class Status {
 };
 
 // An internned version of the NoErr object.
-extern const Status NoErr();
+const Status NoErr();
 
 // The easiest way to create an error.
 #define ERR(M) Status(M, __FILE__);
