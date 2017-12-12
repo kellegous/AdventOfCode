@@ -1,7 +1,13 @@
-ALL: 02 04
+ALL: 01 02 04
 
 %.o: %.cc %.h
 	g++ -Wall -std=c++11 -c -o $@ $<
+
+01.o: 01.cc
+	g++ -Wall -std=c++11 -c -o $@ $<
+
+01: 01.o util.o status.o
+	g++ -Wall -std=c++11 -o $@ $^
 
 02: 02.cc
 	g++ -Wall -o $@ $<
