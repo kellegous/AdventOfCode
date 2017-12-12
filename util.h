@@ -80,7 +80,7 @@ Status RemoveDirectory(const std::string& path, bool recursive=false);
 
 void Basename(std::string* res, std::string& path);
 
-void Fatal(const Status& status);
+void Fatal(const char* msg);
 
 } // util
 

@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "util.h"
+
 namespace {
 
 bool ParseInt(const std::string& s, int base, int* v) {
@@ -72,12 +74,12 @@ bool Sum(int* val, const char* filename) {
 }
 
 int main(int argc, char* argv[]) {
+    const char* filename = (argc < 2)
+        ? "02.in.txt"
+        : argv[1];
     int sum;
-    for (int i = 1; i < argc; i++) {
-        if (!Sum(&sum, argv[i])) {
-            fprintf(stderr, "sum failed for %s.\n", argv[i]);
-            return 1;
-        }
-        printf("%s: %d\n", argv[i], sum);
+    if (!Sum(&sum, filename)) {
+        util::Fatal("sum failed");
     }
+    printf("%d\n", sum);
 }

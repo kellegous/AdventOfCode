@@ -66,13 +66,17 @@ Status Process(int* count, const char* filename) {
 }
 
 int main(int argc, char* argv[]) {
-	for (int i = 1; i < argc; i++) {
-		int count = 0;
-		Status did = Process(&count, argv[i]);
-		if (!did.ok()) {
-			util::Fatal(did);
-		}
-		printf("%s: %d\n", argv[i], count);
+	const char* filename = (argc < 2)
+		? "04.in.txt"
+		: argv[1];
+
+	int count = 0;
+	Status did = Process(&count, filename);
+	if (!did.ok()) {
+		util::Fatal(did.what());
 	}
+
+	printf("%d\n", count);
+
 	return 0;
 }

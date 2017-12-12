@@ -240,8 +240,8 @@ void Basename(std::string* res, std::string& path) {
   } while (j != 0);
 }
 
-void Fatal(const Status& status) {
-  fprintf(stderr, "%s\n", status.what());
+void Fatal(const char* msg) {
+  fprintf(stderr, "[FATAL] %s\n", msg);
   abort();
 }
 

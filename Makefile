@@ -9,8 +9,11 @@ ALL: 01 02 04
 01: 01.o util.o status.o
 	g++ -Wall -std=c++11 -o $@ $^
 
-02: 02.cc
-	g++ -Wall -o $@ $<
+02.o: 02.cc
+	g++ -Wall -std=c++11 -c -o $@ $<
+
+02: 02.o util.o status.o
+	g++ -Wall -std=c++11 -o $@ $^
 
 04.o: 04.cc
 	g++ -Wall -std=c++11 -c -o $@ $<
@@ -19,4 +22,4 @@ ALL: 01 02 04
 	g++ -Wall -std=c++11 -o $@ $^
 
 clean:
-	rm -f *.o 02 04
+	rm -f *.o 01 02 04
