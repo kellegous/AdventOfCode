@@ -66,10 +66,9 @@ void Shuffle(std::vector<int>& sectors) {
     int index = FindLargest(sectors);
     int count = sectors[index];
     sectors[index] = 0;
-    index = (index + 1) % sectors.size();
     for (int i = 0; i < count; i++) {
-        sectors[index]++;
         index = (index + 1) % sectors.size();
+        sectors[index]++;
     }
 }
 
