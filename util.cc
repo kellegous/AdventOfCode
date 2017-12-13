@@ -139,7 +139,7 @@ void StringFormat(std::string* s, const char* fmt, ...) {
   }
 }
 
-Status ParseInt(std::string& s, int base, int* v) {
+Status ParseInt(const std::string& s, int base, int* v) {
   char* end;
   *v = strtol(s.c_str(), &end, 10);
   if (*end) {

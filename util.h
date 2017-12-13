@@ -62,7 +62,7 @@ void StringFormat(std::string* s, const char* fmt, va_list args);
 void StringFormat(std::string* s, const char* fmt, ...);
 
 // A proper interface to strtol.
-Status ParseInt(std::string& s, int base, int* v);
+Status ParseInt(const std::string& s, int base, int* v);
 
 // A simple file glob utility.
 Status Glob(const char* p, std::vector<std::string>* res);
