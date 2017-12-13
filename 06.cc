@@ -77,8 +77,11 @@ int Realloc(std::vector<int>& sectors) {
     std::unordered_set<std::string> set;
 
     while (true) {
-        const char* data = reinterpret_cast<const char*>(sectors.data());
-        std::string key(data, sectors.size() * sizeof(int));
+        // just copy the raw bytes in sectors so that they and use that
+        // as the value in the set.
+        std::string key(
+            reinterpret_cast<const char*>(sectors.data()),
+            sectors.size() * sizeof(int));
         if (!set.insert(key).second) {
             return count;
         }
