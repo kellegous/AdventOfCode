@@ -141,7 +141,7 @@ void StringFormat(std::string* s, const char* fmt, ...) {
 
 Status ParseInt(const std::string& s, int base, int* v) {
   char* end;
-  *v = strtol(s.c_str(), &end, 10);
+  *v = strtol(s.c_str(), &end, base);
   if (*end) {
     std::string err;
     StringFormat(&err, "invalid number format: %s", s.c_str());
@@ -149,6 +149,20 @@ Status ParseInt(const std::string& s, int base, int* v) {
   }
 
   return NoErr();
+}
+
+void StringSplit(
+  std::vector<std::string>* results,
+  const std::string& subject,
+  const std::string& sep) {
+  size_t beg = 0;
+  size_t end = 0;
+  results->clear();
+  while ((end = subject.find(sep, beg)) != std::string::npos) {
+    results->push_back(subject.substr(beg, end - beg));
+    beg = end + 1;
+  }
+  results->push_back(subject.substr(beg, end));
 }
 
 Status Glob(const char* p, std::vector<std::string>* res) {

@@ -61,6 +61,12 @@ class Timer {
 void StringFormat(std::string* s, const char* fmt, va_list args);
 void StringFormat(std::string* s, const char* fmt, ...);
 
+// split a string into parts.
+void StringSplit(
+  std::vector<std::string>* result,
+  const std::string& subject,
+  const std::string& sep);
+
 // A proper interface to strtol.
 Status ParseInt(const std::string& s, int base, int* v);
 
