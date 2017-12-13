@@ -87,10 +87,6 @@ int Realloc(std::vector<int>& sectors) {
         Shuffle(sectors);
         count++;
     }
-    const char* data = reinterpret_cast<const char*>(sectors.data());
-    std::string key(data, sectors.size() * sizeof(int));
-    printf("%ld\n", key.size());
-    return 0;
 }
 
 }
