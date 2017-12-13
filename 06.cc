@@ -76,6 +76,10 @@ int Realloc(std::vector<int>& sectors) {
     int count = 0;
     std::unordered_set<std::string> set;
 
+    if (sectors.size() < 2) {
+        return 0;
+    }
+
     while (true) {
         // just copy the raw bytes in sectors so that they and use that
         // as the value in the set.
