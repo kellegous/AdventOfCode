@@ -59,8 +59,7 @@ int main(int argc, char* argv[]) {
     std::string data;
     Status did = ReadFile(&data, filename);
     if (!did.ok()) {
-        // util::Fatal(did.what());
-        util::Fatal("a problem");
+        util::Fatal(did.what());
     }
 
     printf("%d\n", Solve(data));
