@@ -3,6 +3,7 @@
 #include <fstream>
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "status.h"
@@ -63,11 +64,11 @@ class Node {
             return ERR(err.c_str());
         }
 
-        beg = str.find("->", end);
+        beg = str.find("-> ", end);
         if (beg != std::string::npos) {
             util::StringSplit(
                 &children_,
-                str.substr(beg+2),
+                str.substr(beg+3),
                 ", ");
         }
 
@@ -119,6 +120,17 @@ Status ReadFile(
     return NoErr();
 }
 
+void Index(
+    std::unordered_set<std::string>* idx,
+    const std::vector<std::unique_ptr<Node>>& nodes) {
+    for (int i = 0, n = nodes.size(); i < n; i++) {
+        const std::vector<std::string>& children = nodes[i]->children();
+        for (int j = 0, m = children.size(); j < m; j++) {
+            idx->insert(children[j]);
+        }
+    }
+}
+
 }
 
 int main(int argc, char* argv[]) {
@@ -132,11 +144,12 @@ int main(int argc, char* argv[]) {
         util::Fatal(did.what());
     }
 
+    std::unordered_set<std::string> idx;
+    Index(&idx, nodes);
+
     for (int i = 0, n = nodes.size(); i < n; i++) {
-        printf("%s,%d\n", nodes[i]->name().c_str(), nodes[i]->value());
-        const std::vector<std::string>& children = nodes[i]->children();
-        for (int j = 0, m = children.size(); j < m; j++) {
-            printf("    %s\n", children[j].c_str());
+        if (idx.find(nodes[i]->name()) == idx.end()) {
+            printf("%s\n", nodes[i]->name().c_str());
         }
     }
 

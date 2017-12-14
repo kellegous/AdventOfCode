@@ -160,7 +160,7 @@ void StringSplit(
   results->clear();
   while ((end = subject.find(sep, beg)) != std::string::npos) {
     results->push_back(subject.substr(beg, end - beg));
-    beg = end + 1;
+    beg = end + sep.size();
   }
   results->push_back(subject.substr(beg, end));
 }
