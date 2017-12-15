@@ -70,6 +70,10 @@ int Evaluate(const char* data, int n) {
         case '<':
             i += ConsumeGarbage(&data[i], n - i);
             break;
+        default:
+            std::string err;
+            util::StringFormat(&err, "invalid char %c at %d", data[i], i);
+            util::Fatal(err.c_str());
         }
     }
 
