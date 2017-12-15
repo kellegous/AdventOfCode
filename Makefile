@@ -2,7 +2,7 @@ CFLAGS := -Wall -std=c++11
 LDFLAGS :=
 OS := $(shell uname -s)
 
-PROGS := 01 02 04 05 06 07 08
+PROGS := 01 02 04 05 06 07 08 09
 
 ifneq ($(OS), Darwin)
 	LDFLAGS += -pthread
@@ -35,6 +35,9 @@ ALL: $(PROGS)
 	g++ $(LDFLAGS) -o $@ $^
 
 08: 08.o util.o status.o
+	g++ $(LDFLAGS) -o $@ $^
+
+09: 09.o util.o status.o
 	g++ $(LDFLAGS) -o $@ $^
 
 clean:
